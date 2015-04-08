@@ -10,20 +10,24 @@
 
 @interface myapiViewController ()
 
+
+
 @end
 
 @implementation myapiViewController
 
-@synthesize search,searchButton;
+
+
+@synthesize search,searchButton,j,i;
+
 
 - (void)viewDidLoad {
+    
+    
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
     
- 
-    
-    /// uiTextField
+      /// uiTextField
     
     
     search = [[UITextField alloc]initWithFrame:CGRectMake(40, 150, 300, 50)];
@@ -33,7 +37,12 @@
 
     search.placeholder = @"Movie Name";
     
-    search.delegate = self;
+    
+    
+    [search addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
+    
+    
+      search.delegate = self;
     
     search.textAlignment = NSTextAlignmentCenter;
     
@@ -46,37 +55,33 @@
     
     searchButton.frame = CGRectMake(170, 220, 50, 50);
     
-    
-    [searchButton setTitle:@"Search" forState:UIControlStateNormal];
-    
     [searchButton setImage:[UIImage imageNamed:@"srButton.png"] forState:UIControlStateNormal];
 
     
     [searchButton addTarget:self action:@selector(Click) forControlEvents:UIControlEventTouchUpInside];
     
-    [searchButton setEnabled:YES];
-    
-    [self.view addSubview:searchButton];
+     [self.view addSubview:searchButton];
     
     
-      [search setText:@"300"];
+  //  search.text = @"";
+    
+ }
 
-    
-    
-    
 
-    
-    
-
-    
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == search)
+    {
+        
+        [self textdata];
+        
+        
+        // Do whatever with your text field here
+    }
 }
 
 
-
--(void)Click
-{
-    
-    
+-(void) Click {
     
     
     indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -124,15 +129,11 @@
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
     
     
-    [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-   
-     {
+    [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
          
          
          
-         if ([data length]>0 && error == nil)
-             
-         {
+         if ([data length]>0 && error == nil) {
              
 
              
@@ -250,7 +251,6 @@
              [self.view addSubview:dirnamLabel];
              
 
-             
                  genresLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 380, 80, 60)];
              
              genresLabel1.text =@"Genres :";
@@ -317,7 +317,7 @@
 
 
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField;              // called when 'return' key pressed. return NO to ignore.
+- (BOOL) textFieldShouldReturn:(UITextField *)textField;              // called when 'return' key pressed. return NO to ignore.
 {
     
        return [textField resignFirstResponder];
@@ -325,8 +325,7 @@
 }
 
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
     [self textdata];
     
@@ -340,33 +339,60 @@
 }
 
 
-
-
--(void)textdata
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
 {
-    long i = search.text.length;
+    [self textdata];
     
-    if (i > 0)
+    NSLog(@"i am here");
+    
+    
+    return YES;
+}
+
+
+-(void) textdata
+{
+    
+    
+    
+    
+    
+    if ([search.text isEqualToString:@""])
     {
-        searchButton.enabled = YES;
-        
+        searchButton.enabled = NO;
+
     }
     
     else
     {
-        searchButton.enabled = NO;
-        
+        searchButton.enabled  = YES;
     }
+    
+//    
+//     i = search.text.length;
+//    
+//    if (i > 0) {
+//        searchButton.enabled = YES;
+//        
+//    }
+//    
+//    else
+//    {
+//        searchButton.enabled = NO;
+//        
+//    }
+//    
+    
+    [self buttonstate];
     
     
 }
 
--(int)buttonenabled
-{
-    int j;
+-(int) buttonstate {
     
-    if ([searchButton isEnabled])
-    {
+    
+    
+    if ([searchButton isEnabled]) {
         j = 1;
         
         
@@ -377,19 +403,22 @@
         j = 0;
     
     
-    NSLog(@" j value si %d",j);
+    NSLog(@" j value is %d",j);
+    
     
     return j;
 }
 
 
-- (void)textFieldDidChange
-{
+- (void) textFieldDidChange {
+    
     [self textdata];
     
     
     NSLog(@"test data is %@",search.text);
 }
+
+
 
 
 @end

@@ -11,16 +11,37 @@
 
 #import "myapiViewController.h"
 
+#import "AppDelegate.h"
+
+
 @interface myApifilmsTests : XCTestCase
+{
+    AppDelegate *appdelegate;
+}
+
+@property (nonatomic ,strong) myapiViewController *apiview;
+
+@property (nonatomic ,strong) NSObject *Button;
+
+@property (nonatomic ,strong)NSObject *textField;
+
 
 @end
 
 @implementation myApifilmsTests
 
+@synthesize apiview,Button,textField;
+
+
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    apiview = [[myapiViewController alloc]init];
+    
+    
 }
+
 
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -28,55 +49,122 @@
 }
 
 
--(void)testwithData
-{
-    
-    myapiViewController  *apiViw = [[myapiViewController alloc]init];
-    
-    
-    
-    apiViw.search = [[UITextField alloc]init];
-    
-    apiViw.search.text = @"300";
-    
-    
-    NSLog(@"text data si %@",apiViw.search.text);
-    
-      [apiViw.searchButton sendActionsForControlEvents: UIControlEventTouchUpInside];
-    
-    [apiViw textdata];
-    
-    int i =   [apiViw buttonenabled];
-    
-    
-    NSLog(@"with data %d",i);
-    
-    XCTAssertEqual(i, 1,@"Data test Passed");
-    
-}
-
-
--(void)testwithoutData
-{
-    myapiViewController  *apiViw = [[myapiViewController alloc]init];
-    
-    int i =   [apiViw buttonenabled];
-    
-    
-    
-    XCTAssertEqual(i, 0,@"Withot Data test Passed");
-    
-}
-
-
-
-
-
 
 - (void)testExample {
     // This is an example of a functional test case.
     XCTAssert(YES, @"Pass");
+    
+    
 }
+
+
+
+
+- (void) testWithData
+{
+   // apiview = [[myapiViewController alloc]init];
+    
+    
+ //   self.apiview.search = [[UITextField alloc]init];
+    
+    self.apiview.searchButton = [[UIButton alloc]init];
+    
+    
+    
+    apiview.search.text = @"Matrix";
+    
+    NSLog(@"the data testwithData is %@",[apiview.search text]);
+
+    
+    int Yesss = [apiview buttonstate];
+    
+    
+    
+    XCTAssertEqual(Yesss, 1,@"Pass Button is enabled");
+
+    
+}
+
+
+//
+//- (void) testWithData1
+//{
+//    // apiview = [[myapiViewController alloc]init];
+//    
+//    
+//    //   self.apiview.search = [[UITextField alloc]init];
+//    
+//    self.apiview.searchButton = [[UIButton alloc]init];
+//    
+//    
+//    
+//    apiview.search.text = @"Matrix";
+//    
+//    NSLog(@"the data testwithData is %@",[apiview.search text]);
+//    
+//    
+//    int Yesss = [apiview buttonstate];
+//    
+//    
+//    
+//    XCTAssertEqual(Yesss, 1,@"Pass Button is enabled");
+//    
+//    
+//}
+//
+
+
+
+
+
+- (void) testWithoutData
+{
+    
+  //  apiview = [[myapiViewController alloc]init];
+    
+   self.apiview.search = [[UITextField alloc]init];
+    
+    //    self.apiview.searchButton = [[UIButton alloc]init];
+    
+    self.apiview.search.text = @"";
+    
+    NSLog(@"the data withouttestData is %@",[apiview.search text]);
+
+    
+    int Yesss = [apiview buttonstate];
+    
+    
+    XCTAssertEqual(Yesss, 0,@"Pass Button is Disabled");
+    
+}
+
+
+
+//
+//
+//- (void) testWithoutData1
+//{
+//    
+//    //  apiview = [[myapiViewController alloc]init];
+//    
+//    self.apiview.search = [[UITextField alloc]init];
+//    
+//    //    self.apiview.searchButton = [[UIButton alloc]init];
+//    
+//    self.apiview.search.text = @"";
+//    
+//    NSLog(@"the data withouttestData is %@",[apiview.search text]);
+//    
+//    
+//    int Yesss = [apiview buttonstate];
+//    
+//    
+//    XCTAssertEqual(Yesss, 0,@"Pass Button is Disabled");
+//    
+//}
+//
+
+
 
 - (void)testPerformanceExample {
     // This is an example of a performance test case.

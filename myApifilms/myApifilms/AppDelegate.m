@@ -24,13 +24,13 @@
     // Override point for customization after application launch.
     
     
-    myapiViewController *fst = [[myapiViewController alloc]initWithNibName:@"myapiViewController" bundle:nil];
+    
+    myapiViewController *fst = [[myapiViewController alloc]init];
     
     
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:fst];
     
     self.window.rootViewController = nav;
-    
     
     
     

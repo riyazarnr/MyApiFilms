@@ -13,6 +13,7 @@
 {
     
         
+    
     UILabel *urlIMDBLabel;
     
     UILabel *genresLabel;
@@ -41,18 +42,24 @@
 
 }
 
+
+
 @property (strong,nonatomic)    UITextField *search;
 
 @property (strong,nonatomic)    UIButton *searchButton;
 
 
+@property (assign) int j;
+
+@property (assign) long i;
 
 
+-(void) textFieldDidChange;
 
--(int)buttonenabled;
+-(int) buttonstate;
 
 
--(void)textdata;
+-(void) textdata;
 
 
 @end
