@@ -30,7 +30,7 @@
       /// uiTextField
     
     
-    search = [[UITextField alloc]initWithFrame:CGRectMake(40, 150, 300, 50)];
+    search = [[UITextField alloc]initWithFrame:CGRectMake(40, 120, 300, 50)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange) name:UITextFieldTextDidChangeNotification object:search];
 
@@ -40,7 +40,6 @@
     
     
     [search addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
-    
     
       search.delegate = self;
     
@@ -53,7 +52,7 @@
     searchButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     
     
-    searchButton.frame = CGRectMake(170, 220, 50, 50);
+    searchButton.frame = CGRectMake(170, 200, 50, 50);
     
     [searchButton setImage:[UIImage imageNamed:@"srButton.png"] forState:UIControlStateNormal];
 
@@ -63,7 +62,8 @@
      [self.view addSubview:searchButton];
     
     
-  //  search.text = @"";
+    [self textFieldDidChange];
+    
     
  }
 
@@ -73,7 +73,7 @@
     if (object == search)
     {
         
-        [self textdata];
+        [self textFieldDidChange];
         
         
         // Do whatever with your text field here
@@ -110,15 +110,7 @@
     
      NSString *str = @"http://www.myapifilms.com/imdb?title=mask&format=JSON";
     
-    
-    
-    
     NSString *st = [str stringByReplacingOccurrencesOfString:@"mask" withString:search.text];
-    
-    
-    
-
-    
     
     NSURL *url1 = [NSURL URLWithString:st];
     
@@ -135,16 +127,6 @@
          
          if ([data length]>0 && error == nil) {
              
-
-             
-             
-             
-             NSLog(@"%lu",(unsigned long)[data length]);
-             
-             
-             
-
-             
              
              NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
              
@@ -154,12 +136,10 @@
              
              NSArray *genres = [dataDic valueForKey:@"genres"];
              
-             NSLog(@"genre before flatter %@",genres);
              
              
              NSArray *flattened = [genres valueForKeyPath:@"@unionOfArrays.self"];
              
-             NSLog(@"genre after flatter %@",flattened);
 
              
              NSString *mutstr = [flattened componentsJoinedByString: @","];
@@ -198,19 +178,14 @@
              
              NSString *movUrlIMDBStr = [movUrlIMDB componentsJoinedByString:@""];
              
-             NSLog(@"%@",movUrlIMDBStr);
-             
-          //   [indicator stopAnimating];
-             
-    
              
              ///// -------------   UILabels -------------------------
            
              
              
-            movName1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 250, 100, 30)];
+            movName1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 300, 100, 30)];
              
-             movName1.text = @"Title :";
+             movName1.text = @"Title          :";
              
              movName1.textColor = [UIColor blackColor];
              
@@ -218,7 +193,7 @@
              [self.view addSubview:movName1];
 
              
-             movName = [[UILabel alloc]initWithFrame:CGRectMake(120, 250, 200, 30)];
+             movName = [[UILabel alloc]initWithFrame:CGRectMake(120, 300, 200, 30)];
              
              movName.text = movNameTitleStr;
              
@@ -228,7 +203,7 @@
              [self.view addSubview:movName];
              
              
-               dirnamLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 300, 100, 60)];
+               dirnamLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 350, 100, 60)];
              
              dirnamLabel1.text = @"Dir_Name :";
              
@@ -239,7 +214,7 @@
              
              
              
-             dirnamLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 300, 200, 60)];
+             dirnamLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 350, 200, 60)];
              
              dirnamLabel.text = dirNamesStr;
              
@@ -251,9 +226,9 @@
              [self.view addSubview:dirnamLabel];
              
 
-                 genresLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 380, 80, 60)];
+                 genresLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 420, 100, 60)];
              
-             genresLabel1.text =@"Genres :";
+             genresLabel1.text =@"Genres      :";
              
              genresLabel1.textColor = [UIColor blackColor];
              
@@ -261,7 +236,7 @@
              [self.view addSubview:genresLabel1];
              
              
-             genresLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 380, 200, 60)];
+             genresLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 420, 200, 60)];
              
              genresLabel.text = mutstr;
              
@@ -272,16 +247,16 @@
              [self.view addSubview:genresLabel];
              
              
-            urlIMDBLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 450, 80, 60)];
+            urlIMDBLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 500, 100, 60)];
              
-             urlIMDBLabel1.text = @"urlIMDB :";
+             urlIMDBLabel1.text = @"urlIMDB    :";
              
              urlIMDBLabel1.textColor = [UIColor blackColor];
              
              
              [self.view addSubview:urlIMDBLabel1];
              
-             urlIMDBLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 450, 200, 60)];
+             urlIMDBLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 500, 200, 60)];
              
              urlIMDBLabel.text = movUrlIMDBStr;
              
@@ -295,18 +270,32 @@
 
              
              
-             
-             
          }
          
          else if ([data length] == 0 && error == nil)
          {
+             
+             
+             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No Movie Found" message:@"Try Other Search" delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+             
+             
+             [alert show];
+             
+             [indicator stopAnimating];
+             
+             
              NSLog(@"Noting dowmn");
          }
          
          else if (error != nil)
          {
-             NSLog(@"Error occured");
+             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No Connection / remove Spaces" delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+             
+             [alert show];
+             
+             [indicator stopAnimating];
+             
+            NSLog(@"Error occured");
          }
          
      }
@@ -317,8 +306,11 @@
 
 
 
-- (BOOL) textFieldShouldReturn:(UITextField *)textField;              // called when 'return' key pressed. return NO to ignore.
-{
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    
+    
+    
+    [self Click];
     
        return [textField resignFirstResponder];
     
@@ -327,65 +319,20 @@
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
-    [self textdata];
+    [self textFieldDidChange];
     
     [search resignFirstResponder];
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 {
-    [self textdata];
+    [self textFieldDidChange];
     
-    NSLog(@"i am here");
     
     
     return YES;
-}
-
-
--(void) textdata
-{
-    
-    
-    
-    
-    
-    if ([search.text isEqualToString:@""])
-    {
-        searchButton.enabled = NO;
-
-    }
-    
-    else
-    {
-        searchButton.enabled  = YES;
-    }
-    
-//    
-//     i = search.text.length;
-//    
-//    if (i > 0) {
-//        searchButton.enabled = YES;
-//        
-//    }
-//    
-//    else
-//    {
-//        searchButton.enabled = NO;
-//        
-//    }
-//    
-    
-    [self buttonstate];
-    
-    
 }
 
 -(int) buttonstate {
@@ -403,7 +350,6 @@
         j = 0;
     
     
-    NSLog(@" j value is %d",j);
     
     
     return j;
@@ -412,10 +358,29 @@
 
 - (void) textFieldDidChange {
     
-    [self textdata];
     
     
-    NSLog(@"test data is %@",search.text);
+    
+    if ([search.text isEqualToString:@""]) {
+        searchButton.enabled = NO;
+        
+    }
+    
+    else
+        
+        
+        searchButton.enabled  = YES;
+    
+    
+    
+    [self buttonstate];
+    
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 

@@ -59,7 +59,5 @@
 -(int) buttonstate;
 
 
--(void) textdata;
-
 
 @end
