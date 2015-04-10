@@ -8,9 +8,6 @@
 
 #import "myapiViewController.h"
 
-
-
-
             ////      Common Data Types to ReUse    ////
 
 
@@ -25,9 +22,15 @@ static NSString *joinByCommaString = @",";
 
 @interface myapiViewController ()
 
+{
+}
+
 @end
 
 @implementation myapiViewController
+{
+
+}
 
 
 @synthesize searchButton,searchTextfield,j,alert,restButton;
@@ -37,6 +40,12 @@ static NSString *joinByCommaString = @",";
     
     
     [super viewDidLoad];
+    
+    
+    
+    
+    
+    
 
     
     
@@ -117,15 +126,12 @@ static NSString *joinByCommaString = @",";
 
 
 
-
-
                             ///  To Enable or Disable Button ///
 
 
 - (void) textFieldDidChange {
     
     
-    [self textFieldDidBeginEditing:searchTextfield];
     
     
     
@@ -154,9 +160,6 @@ static NSString *joinByCommaString = @",";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
-    NSLog(@"typping");
-    
-    
     
     
     
@@ -164,7 +167,13 @@ static NSString *joinByCommaString = @",";
                                      target:self
                                    selector:@selector(timertoUITextField)
                                    userInfo:nil
-                                    repeats:NO];
+                                    repeats:YES];
+    
+    
+  //  [NSTimer scheduledTimerWithTimeInterval:8.0 invocation:self repeats:YES];
+    
+    
+    
     
 }
 
@@ -329,199 +338,213 @@ static NSString *joinByCommaString = @",";
          
          
                         if ([data length]>0 && error == nil) {
-             
-             
-             NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-             
-             
-             // =====================  To get genres Names =============================== //
-             
-             
-             NSArray *genres = [dataDic valueForKey:@"genres"];
-             
-             
-             
-             NSArray *flattenedgenres = [genres valueForKeyPath:flatterArrayString];
-             
-
-             
-             NSString *mutstr = [flattenedgenres componentsJoinedByString:joinByCommaString];
-             
-             
-             // ===================== To get Director Names =============================== //
-             
-             
-             NSDictionary *dirDic = [dataDic valueForKey:@"directors"];
-             
-             
-             NSArray *dirName = [dirDic valueForKey:@"name"];
-             
-             
-             NSArray *flatteneddirName  = [dirName valueForKeyPath:flatterArrayString];
-             
-             
-             
-             NSString *dirNamesStr = [flatteneddirName componentsJoinedByString:joinByCommaString];
-             
-             
-             // ===================== To get Title Names =================================  //
-             
-             
-             NSArray *titleMov = [dataDic valueForKey:@"title"];
-             
-             
-             NSString *movNameTitleStr = [titleMov componentsJoinedByString:joinByCommaString];
-             
-             
-             // ===================== To get Url Links ==================================  //
-             
-             NSArray *movUrlIMDB = [dataDic valueForKey:@"urlIMDB"];
-             
-             
-             
-             NSString *movUrlIMDBStr = [movUrlIMDB componentsJoinedByString:emptyString];
-             
-             
-             
-             
-             
+                            
+                            
+                            
+                            
+                            @autoreleasepool {
+                                
+                                
+                                
+NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                                
+                                
+                                // =====================  To get genres Names =============================== //
+                                
+                                
+                                NSArray *genres = [dataDic valueForKey:@"genres"];
+                                
+                                
+                                
+                                NSArray *flattenedgenres = [genres valueForKeyPath:flatterArrayString];
+                                
+                                
+                                
+                                NSString *mutstr = [flattenedgenres componentsJoinedByString:joinByCommaString];
+                                
+                                
+                                // ===================== To get Director Names =============================== //
+                                
+                                
+                                NSDictionary *dirDic = [dataDic valueForKey:@"directors"];
+                                
+                                
+                                NSArray *dirName = [dirDic valueForKey:@"name"];
+                                
+                                
+                                NSArray *flatteneddirName  = [dirName valueForKeyPath:flatterArrayString];
+                                
+                                
+                                
+                                NSString *dirNamesStr = [flatteneddirName componentsJoinedByString:joinByCommaString];
+                                
+                                
+                                // ===================== To get Title Names =================================  //
+                                
+                                
+                                NSArray *titleMov = [dataDic valueForKey:@"title"];
+                                
+                                
+                                NSString *movNameTitleStr = [titleMov componentsJoinedByString:joinByCommaString];
+                                
+                                
+                                // ===================== To get Url Links ==================================  //
+                                
+                                NSArray *movUrlIMDB = [dataDic valueForKey:@"urlIMDB"];
+                                
+                                
+                                
+                                NSString *movUrlIMDBStr = [movUrlIMDB componentsJoinedByString:emptyString];
+                                
+                                
+                                
+                                
+                                
                                 ///  Reset Button  ///
-         
-             restButton = [UIButton buttonWithType:UIButtonTypeCustom];
-             
-             restButton.frame = CGRectMake(220, 600, 60, 60);
-             
-             [restButton setImage:[UIImage imageNamed:@"resetButton.png"] forState:UIControlStateNormal];
-             
-             
-             [restButton addTarget:self action:@selector(resetMovieResults) forControlEvents:UIControlEventTouchUpInside];
+                                
+                                restButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                                
+                                restButton.frame = CGRectMake(220, 600, 60, 60);
+                                
+                                [restButton setImage:[UIImage imageNamed:@"resetButton.png"] forState:UIControlStateNormal];
+                                
+                                
+                                [restButton addTarget:self action:@selector(resetMovieResults) forControlEvents:UIControlEventTouchUpInside];
+                                
+                                [self.view addSubview:restButton];
+                                
+                                
+                                
+                                
+                                /////    Movie Results Label Printing   /////
+                                
+                                
+                                
+                                staticTitle = [[UILabel alloc]initWithFrame:CGRectMake(20, 300, 100, 60)];
+                                
+                                staticTitle.text = @"Title";
+                                
+                                staticTitle.textAlignment = NSTextAlignmentCenter;
+                                
+                                staticTitle.backgroundColor = [UIColor brownColor];
+                                
+                                staticTitle.textColor = [UIColor blackColor];
+                                
+                                [self.view addSubview:staticTitle];
+                                
+                                
+                                dynamicTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 300, 200, 60)];
+                                
+                                dynamicTitle.text = movNameTitleStr;
+                                
+                                dynamicTitle.textAlignment = NSTextAlignmentCenter;
+                                
+                                dynamicTitle.backgroundColor = [UIColor grayColor];
+                                
+                                dynamicTitle.textColor = [UIColor whiteColor];
+                                
+                                [self.view addSubview:dynamicTitle];
+                                
+                                
+                                staticDirector = [[UILabel alloc]initWithFrame:CGRectMake(20, 370, 100, 60)];
+                                
+                                staticDirector.text = @"Dir_Name";
+                                
+                                staticDirector.textAlignment = NSTextAlignmentCenter;
+                                
+                                staticDirector.backgroundColor = [UIColor brownColor];
+                                
+                                staticDirector.textColor = [UIColor blackColor];
+                                
+                                [self.view addSubview:staticDirector];
+                                
+                                
+                                
+                                dynamicDirector = [[UILabel alloc]initWithFrame:CGRectMake(140, 370, 200, 60)];
+                                
+                                dynamicDirector.text = dirNamesStr;
+                                
+                                dynamicDirector.backgroundColor = [UIColor grayColor];
+                                
+                                dynamicDirector.textAlignment = NSTextAlignmentCenter;
+                                
+                                dynamicDirector.numberOfLines = 4;
+                                
+                                dynamicDirector.textColor = [UIColor whiteColor];
+                                
+                                [self.view addSubview:dynamicDirector];
+                                
+                                
+                                genresStatic = [[UILabel alloc]initWithFrame:CGRectMake(20, 450, 100, 60)];
+                                
+                                genresStatic.text =@"Genres";
+                                
+                                genresStatic.textAlignment = NSTextAlignmentCenter;
+                                
+                                genresStatic.backgroundColor = [UIColor brownColor];
+                                
+                                
+                                genresStatic.textColor = [UIColor blackColor];
+                                
+                                [self.view addSubview:genresStatic];
+                                
+                                
+                                genresDynamic = [[UILabel alloc]initWithFrame:CGRectMake(140, 450, 200, 60)];
+                                
+                                genresDynamic.text = mutstr;
+                                
+                                genresDynamic.backgroundColor = [UIColor grayColor];
+                                
+                                genresDynamic.numberOfLines = 4;
+                                
+                                genresDynamic.textAlignment = NSTextAlignmentCenter;
+                                
+                                genresDynamic.textColor = [UIColor whiteColor];
+                                
+                                [self.view addSubview:genresDynamic];
+                                
+                                
+                                urlStaticIMDB = [[UILabel alloc]initWithFrame:CGRectMake(20, 530, 100, 60)];
+                                
+                                urlStaticIMDB.text = @"UrlIMDB:";
+                                
+                                urlStaticIMDB.textAlignment = NSTextAlignmentCenter;
+                                
+                                urlStaticIMDB.backgroundColor = [UIColor brownColor];
+                                
+                                
+                                urlStaticIMDB.textColor = [UIColor blackColor];
+                                
+                                [self.view addSubview:urlStaticIMDB];
+                                
+                                
+                                urlDynamicIMD = [[UILabel alloc]initWithFrame:CGRectMake(140, 530, 200, 60)];
+                                
+                                urlDynamicIMD.text = movUrlIMDBStr;
+                                
+                                urlDynamicIMD.backgroundColor = [UIColor grayColor];
+                                
+                                urlDynamicIMD.textAlignment = NSTextAlignmentCenter;
+                                
+                                urlDynamicIMD.numberOfLines = 2;
+                                
+                                urlDynamicIMD.textColor = [UIColor whiteColor];
+                                
+                                [self.view addSubview:urlDynamicIMD];
+                                
+                                
+                                
 
-            [self.view addSubview:restButton];
-
+                            }
              
              
-             
-                    /////    Movie Results Label Printing   /////
-           
-             
-             
-                staticTitle = [[UILabel alloc]initWithFrame:CGRectMake(20, 300, 100, 60)];
-                
-                staticTitle.text = @"Title";
-                            
-                staticTitle.textAlignment = NSTextAlignmentCenter;
-                
-                staticTitle.backgroundColor = [UIColor brownColor];
-             
-                staticTitle.textColor = [UIColor blackColor];
-             
-                [self.view addSubview:staticTitle];
-
-             
-                dynamicTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 300, 200, 60)];
-             
-                dynamicTitle.text = movNameTitleStr;
-                            
-                dynamicTitle.textAlignment = NSTextAlignmentCenter;
-                            
-                dynamicTitle.backgroundColor = [UIColor grayColor];
-
-                dynamicTitle.textColor = [UIColor whiteColor];
-             
-                [self.view addSubview:dynamicTitle];
-
-             
-                staticDirector = [[UILabel alloc]initWithFrame:CGRectMake(20, 370, 100, 60)];
-             
-                staticDirector.text = @"Dir_Name";
-                
-                staticDirector.textAlignment = NSTextAlignmentCenter;
-                            
-                staticDirector.backgroundColor = [UIColor brownColor];
-
-                staticDirector.textColor = [UIColor blackColor];
-             
-                [self.view addSubview:staticDirector];
-
-             
-             
-                dynamicDirector = [[UILabel alloc]initWithFrame:CGRectMake(140, 370, 200, 60)];
-             
-                dynamicDirector.text = dirNamesStr;
-                            
-                dynamicDirector.backgroundColor = [UIColor grayColor];
-                            
-                dynamicDirector.textAlignment = NSTextAlignmentCenter;
-
-                dynamicDirector.numberOfLines = 4;
-             
-                dynamicDirector.textColor = [UIColor whiteColor];
-             
-                [self.view addSubview:dynamicDirector];
-
-
-                genresStatic = [[UILabel alloc]initWithFrame:CGRectMake(20, 450, 100, 60)];
-             
-                genresStatic.text =@"Genres";
-                            
-                genresStatic.textAlignment = NSTextAlignmentCenter;
-                            
-                genresStatic.backgroundColor = [UIColor brownColor];
-
-             
-                genresStatic.textColor = [UIColor blackColor];
-             
-                [self.view addSubview:genresStatic];
-
-             
-                genresDynamic = [[UILabel alloc]initWithFrame:CGRectMake(140, 450, 200, 60)];
-             
-                genresDynamic.text = mutstr;
-                            
-                genresDynamic.backgroundColor = [UIColor grayColor];
-
-                genresDynamic.numberOfLines = 4;
-                            
-                genresDynamic.textAlignment = NSTextAlignmentCenter;
-             
-                genresDynamic.textColor = [UIColor whiteColor];
-             
-                [self.view addSubview:genresDynamic];
-
-             
-                urlStaticIMDB = [[UILabel alloc]initWithFrame:CGRectMake(20, 530, 100, 60)];
-             
-                urlStaticIMDB.text = @"UrlIMDB:";
-                            
-                urlStaticIMDB.textAlignment = NSTextAlignmentCenter;
-                            
-                urlStaticIMDB.backgroundColor = [UIColor brownColor];
-
-             
-                urlStaticIMDB.textColor = [UIColor blackColor];
-             
-                [self.view addSubview:urlStaticIMDB];
-             
-
-                urlDynamicIMD = [[UILabel alloc]initWithFrame:CGRectMake(140, 530, 200, 60)];
-             
-                urlDynamicIMD.text = movUrlIMDBStr;
-                            
-                urlDynamicIMD.backgroundColor = [UIColor grayColor];
-                            
-                urlDynamicIMD.textAlignment = NSTextAlignmentCenter;
-
-                urlDynamicIMD.numberOfLines = 2;
-             
-                urlDynamicIMD.textColor = [UIColor whiteColor];
-             
-                [self.view addSubview:urlDynamicIMD];
-                            
-                            
-                            
-             
+                        
              
 [indicator stopAnimating];
+                            
+                            
+               
+                            
 
              
              
@@ -590,8 +613,10 @@ static NSString *joinByCommaString = @",";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    
+    
 }
-
 
 
 
