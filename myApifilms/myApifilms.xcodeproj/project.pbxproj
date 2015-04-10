@@ -17,6 +17,7 @@
 		4DB13FC01ABA98E100917375 /* myApifilmsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB13FBF1ABA98E100917375 /* myApifilmsTests.m */; };
 		4DB13FD21ABB5B6E00917375 /* myapiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DB13FD01ABB5B6E00917375 /* myapiViewController.m */; };
 		4DB13FD31ABB5B6E00917375 /* myapiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4DB13FD11ABB5B6E00917375 /* myapiViewController.xib */; };
+		4DF426DE1AD52B4900436093 /* resetButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4DF426DD1AD52B4900436093 /* resetButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		4DB13FCF1ABB5B6E00917375 /* myapiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myapiViewController.h; sourceTree = "<group>"; };
 		4DB13FD01ABB5B6E00917375 /* myapiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myapiViewController.m; sourceTree = "<group>"; };
 		4DB13FD11ABB5B6E00917375 /* myapiViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = myapiViewController.xib; sourceTree = "<group>"; };
+		4DF426DD1AD52B4900436093 /* resetButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = resetButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				4DB13FD11ABB5B6E00917375 /* myapiViewController.xib */,
 				4DB13FAD1ABA98E100917375 /* Main.storyboard */,
 				4D5AC0F01ACBD45500684D0A /* srButton.png */,
+				4DF426DD1AD52B4900436093 /* resetButton.png */,
 				4D5AC0EE1ACBD33400684D0A /* decorative_border.png */,
 				4DB13FB01ABA98E100917375 /* Images.xcassets */,
 				4DB13FB21ABA98E100917375 /* LaunchScreen.xib */,
@@ -208,6 +211,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DF426DE1AD52B4900436093 /* resetButton.png in Resources */,
 				4D5AC0F11ACBD45500684D0A /* srButton.png in Resources */,
 				4DB13FAF1ABA98E100917375 /* Main.storyboard in Resources */,
 				4DB13FB41ABA98E100917375 /* LaunchScreen.xib in Resources */,

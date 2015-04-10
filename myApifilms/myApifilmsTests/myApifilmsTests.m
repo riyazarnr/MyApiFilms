@@ -60,9 +60,7 @@
 
 
 
-- (void) testWithData
-{
-   // apiview = [[myapiViewController alloc]init];
+- (void) testWithData {
     
     
  //   self.apiview.search = [[UITextField alloc]init];
@@ -71,9 +69,9 @@
     
     
     
-    apiview.search.text = @"Matrix";
+    apiview.searchTextfield.text = @"300";
     
-    NSLog(@"the data testwithData is %@",[apiview.search text]);
+    NSLog(@"the data testwithData is %@",[apiview.searchTextfield text]);
 
     
     int Yesss = [apiview buttonstate];
@@ -86,50 +84,45 @@
 }
 
 
-//
-//- (void) testWithData1
-//{
-//    // apiview = [[myapiViewController alloc]init];
-//    
-//    
-//    //   self.apiview.search = [[UITextField alloc]init];
-//    
-//    self.apiview.searchButton = [[UIButton alloc]init];
-//    
-//    
-//    
-//    apiview.search.text = @"Matrix";
-//    
-//    NSLog(@"the data testwithData is %@",[apiview.search text]);
-//    
-//    
-//    int Yesss = [apiview buttonstate];
-//    
-//    
-//    
-//    XCTAssertEqual(Yesss, 1,@"Pass Button is enabled");
-//    
-//    
-//}
-//
 
-
-
-
-
-- (void) testWithoutData
-{
+- (void) testWithData1 {
     
-  //  apiview = [[myapiViewController alloc]init];
     
-   self.apiview.search = [[UITextField alloc]init];
+    self.apiview.searchButton = [[UIButton alloc]init];
     
-    //    self.apiview.searchButton = [[UIButton alloc]init];
     
-    self.apiview.search.text = @"";
     
-    NSLog(@"the data withouttestData is %@",[apiview.search text]);
+    apiview.searchTextfield.text = @"Matrix";
+    
+    NSLog(@"the data testwithData is %@",[apiview.searchTextfield text]);
+    
+    
+    int Yesss = [apiview buttonstate];
+    
+    
+    
+    XCTAssertEqual(Yesss, 1,@"Pass Button is enabled");
+    
+    
+}
 
+
+
+
+
+
+- (void) testWithoutData {
+    
+    
+    
+   self.apiview.searchTextfield = [[UITextField alloc]init];
+    
+    
+    self.apiview.searchTextfield.text = @"";
+    
+    NSLog(@"the data withouttestData is %@",[apiview.searchTextfield text]);
+
+    
     
     int Yesss = [apiview buttonstate];
     

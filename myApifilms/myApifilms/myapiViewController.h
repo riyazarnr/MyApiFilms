@@ -14,25 +14,25 @@
     
         
     
-    UILabel *urlIMDBLabel;
+    UILabel *urlDynamicIMD;
     
-    UILabel *genresLabel;
+    UILabel *genresDynamic;
     
     
-    UILabel *dirnamLabel;
+    UILabel *dynamicDirector;
     
-    UILabel *movName;
+    UILabel *dynamicTitle;
     
     
     //  Static UILabels 
     
-    UILabel*  urlIMDBLabel1;
+    UILabel*  urlStaticIMDB;
     
-    UILabel*    genresLabel1;
+    UILabel*    genresStatic;
     
-    UILabel*  dirnamLabel1;
+    UILabel*  staticDirector;
     
-    UILabel *    movName1;
+    UILabel *  staticTitle;
 
     
     UIActivityIndicatorView *indicator;
@@ -44,14 +44,17 @@
 
 
 
-@property (strong,nonatomic)    UITextField *search;
+@property (strong,nonatomic)    UITextField *searchTextfield;
 
 @property (strong,nonatomic)    UIButton *searchButton;
 
+@property (strong,nonatomic) UIButton *restButton;
+
+
+@property (strong , nonatomic) UIAlertView *alert;
+
 
 @property (assign) int j;
-
-@property (assign) long i;
 
 
 -(void) textFieldDidChange;

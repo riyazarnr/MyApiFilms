@@ -8,59 +8,92 @@
 
 #import "myapiViewController.h"
 
+
+
+
+            ////      Common Data Types to ReUse    ////
+
+
+
+static NSString *tyrAgainstring = @"Try Again";
+
+static NSString *emptyString = @"";
+
+static NSString *flatterArrayString = @"@unionOfArrays.self";
+
+static NSString *joinByCommaString = @",";
+
 @interface myapiViewController ()
-
-
 
 @end
 
 @implementation myapiViewController
 
 
-
-@synthesize search,searchButton,j,i;
+@synthesize searchButton,searchTextfield,j,alert,restButton;
 
 
 - (void)viewDidLoad {
     
     
     [super viewDidLoad];
-    
-    
-      /// uiTextField
-    
-    
-    search = [[UITextField alloc]initWithFrame:CGRectMake(40, 120, 300, 50)];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange) name:UITextFieldTextDidChangeNotification object:search];
-
-
-    search.placeholder = @"Movie Name";
-    
-    
-    
-    [search addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
-    
-      search.delegate = self;
-    
-    search.textAlignment = NSTextAlignmentCenter;
-    
-    search.background = [UIImage imageNamed:@"decorative_border.png"];
-    
-    [self.view addSubview:search];
-    
-    searchButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    
-    
-    searchButton.frame = CGRectMake(170, 200, 50, 50);
-    
-    [searchButton setImage:[UIImage imageNamed:@"srButton.png"] forState:UIControlStateNormal];
 
     
-    [searchButton addTarget:self action:@selector(Click) forControlEvents:UIControlEventTouchUpInside];
     
-     [self.view addSubview:searchButton];
+                        ////        UIComponents        ////////
     
+                             ////   Search TextField ////
+    
+    
+        searchTextfield = [[UITextField alloc]initWithFrame:CGRectMake(40, 120, 300, 50)];
+        
+        
+        searchTextfield.placeholder = @"Movie Name";
+        
+        
+        searchTextfield.delegate = self;
+        
+        
+        searchTextfield.textAlignment = NSTextAlignmentCenter;
+        
+        
+        searchTextfield.background = [UIImage imageNamed:@"decorative_border.png"];
+        
+        
+        [self.view addSubview:searchTextfield];
+    
+    
+    
+                            ////   Search Button ////
+
+    
+        searchButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        
+        
+        searchButton.frame = CGRectMake(170, 200, 50, 50);
+        
+        
+        [searchButton setImage:[UIImage imageNamed:@"srButton.png"] forState:UIControlStateNormal];
+        
+        
+        [searchButton addTarget:self action:@selector(SearchMoviesResults) forControlEvents:UIControlEventTouchUpInside];
+
+        
+        [self.view addSubview:searchButton];
+
+    
+    
+                            //////     Observers Methods etc..   //////////
+    
+    
+    
+    
+    [searchTextfield addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew context:nil];
+
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange) name:UITextFieldTextDidChangeNotification object:searchTextfield];
+
     
     [self textFieldDidChange];
     
@@ -68,300 +101,36 @@
  }
 
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == search)
-    {
+                            /////    Observer Calling Methods /////
+
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == searchTextfield)  {
         
         [self textFieldDidChange];
         
         
-        // Do whatever with your text field here
-    }
-}
-
-
--(void) Click {
-    
-    
-    indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    indicator.frame = CGRectMake(0, 0, 40, 40);
-    
-    indicator.center = self.view.center;
-    
-    [self.view addSubview:indicator];
-    
-    
-    
-    [indicator startAnimating];
-
-    
-    
-    dirnamLabel.text = nil;
-    
-    genresLabel.text = nil;
-    
-    urlIMDBLabel.text = nil;
-    
-    movName.text = nil;
-    
-    
-    
-     NSString *str = @"http://www.myapifilms.com/imdb?title=mask&format=JSON";
-    
-    NSString *st = [str stringByReplacingOccurrencesOfString:@"mask" withString:search.text];
-    
-    NSURL *url1 = [NSURL URLWithString:st];
-    
-    
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url1];
-    
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-    
-    
-    [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-         
-         
-         
-         if ([data length]>0 && error == nil) {
-             
-             
-             NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-             
-             
-             // =====================    genres Names ===============================
-             
-             
-             NSArray *genres = [dataDic valueForKey:@"genres"];
-             
-             
-             
-             NSArray *flattened = [genres valueForKeyPath:@"@unionOfArrays.self"];
-             
-
-             
-             NSString *mutstr = [flattened componentsJoinedByString: @","];
-             
-             
-             // =====================    Director Names ===============================
-             
-             
-             NSDictionary *dirDic = [dataDic valueForKey:@"directors"];
-             
-             
-             NSArray *dirName = [dirDic valueForKey:@"name"];
-             
-             
-             NSArray *flatteneddieName  = [dirName valueForKeyPath:@"@unionOfArrays.self"];
-             
-             
-             
-             NSString *dirNamesStr = [flatteneddieName componentsJoinedByString: @","];
-             
-             
-             // =====================    Title Names ===============================
-             
-             
-             NSArray *titleMov = [dataDic valueForKey:@"title"];
-             
-             
-             NSString *movNameTitleStr = [titleMov componentsJoinedByString:@","];
-             
-             
-             // =====================    Title Names ===============================
-             
-             NSArray *movUrlIMDB = [dataDic valueForKey:@"urlIMDB"];
-             
-             
-             
-             NSString *movUrlIMDBStr = [movUrlIMDB componentsJoinedByString:@""];
-             
-             
-             ///// -------------   UILabels -------------------------
-           
-             
-             
-            movName1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 300, 100, 30)];
-             
-             movName1.text = @"Title          :";
-             
-             movName1.textColor = [UIColor blackColor];
-             
-             
-             [self.view addSubview:movName1];
-
-             
-             movName = [[UILabel alloc]initWithFrame:CGRectMake(120, 300, 200, 30)];
-             
-             movName.text = movNameTitleStr;
-             
-             movName.textColor = [UIColor redColor];
-             
-             
-             [self.view addSubview:movName];
-             
-             
-               dirnamLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 350, 100, 60)];
-             
-             dirnamLabel1.text = @"Dir_Name :";
-             
-             dirnamLabel1.textColor = [UIColor blackColor];
-             
-             
-             [self.view addSubview:dirnamLabel1];
-             
-             
-             
-             dirnamLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 350, 200, 60)];
-             
-             dirnamLabel.text = dirNamesStr;
-             
-             dirnamLabel.numberOfLines = 4;
-             
-             dirnamLabel.textColor = [UIColor redColor];
-             
-             
-             [self.view addSubview:dirnamLabel];
-             
-
-                 genresLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 420, 100, 60)];
-             
-             genresLabel1.text =@"Genres      :";
-             
-             genresLabel1.textColor = [UIColor blackColor];
-             
-             
-             [self.view addSubview:genresLabel1];
-             
-             
-             genresLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 420, 200, 60)];
-             
-             genresLabel.text = mutstr;
-             
-             genresLabel.numberOfLines = 4;
-             
-             genresLabel.textColor = [UIColor redColor];
-             
-             [self.view addSubview:genresLabel];
-             
-             
-            urlIMDBLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 500, 100, 60)];
-             
-             urlIMDBLabel1.text = @"urlIMDB    :";
-             
-             urlIMDBLabel1.textColor = [UIColor blackColor];
-             
-             
-             [self.view addSubview:urlIMDBLabel1];
-             
-             urlIMDBLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 500, 200, 60)];
-             
-             urlIMDBLabel.text = movUrlIMDBStr;
-             
-             urlIMDBLabel.numberOfLines = 2;
-             
-             urlIMDBLabel.textColor = [UIColor redColor];
-             
-             [self.view addSubview:urlIMDBLabel];
-             
-             [indicator stopAnimating];
-
-             
-             
-         }
-         
-         else if ([data length] == 0 && error == nil)
-         {
-             
-             
-             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No Movie Found" message:@"Try Other Search" delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-             
-             
-             [alert show];
-             
-             [indicator stopAnimating];
-             
-             
-             NSLog(@"Noting dowmn");
-         }
-         
-         else if (error != nil)
-         {
-             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No Connection / remove Spaces" delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-             
-             [alert show];
-             
-             [indicator stopAnimating];
-             
-            NSLog(@"Error occured");
-         }
-         
-     }
-     
-     ];
-    
-}
-
-
-
-- (BOOL) textFieldShouldReturn:(UITextField *)textField {
-    
-    
-    
-    [self Click];
-    
-       return [textField resignFirstResponder];
-    
-}
-
-
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    [self textFieldDidChange];
-    
-    [search resignFirstResponder];
-    
-}
-
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
-{
-    [self textFieldDidChange];
-    
-    
-    
-    return YES;
-}
-
--(int) buttonstate {
-    
-    
-    
-    if ([searchButton isEnabled]) {
-        j = 1;
-        
         
     }
-    
-    else
-        
-        j = 0;
-    
-    
-    
-    
-    return j;
 }
+
+
+
+
+
+                            ///  To Enable or Disable Button ///
 
 
 - (void) textFieldDidChange {
     
     
+    [self textFieldDidBeginEditing:searchTextfield];
     
     
-    if ([search.text isEqualToString:@""]) {
+    
+    
+    if ([searchTextfield.text isEqualToString:emptyString]) {
         searchButton.enabled = NO;
         
     }
@@ -377,6 +146,446 @@
     
     
 }
+
+
+                            /////     Text Field Delegate Methods etc .. /////
+
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    
+    NSLog(@"typping");
+    
+    
+    
+    
+    
+    [NSTimer scheduledTimerWithTimeInterval:8.0
+                                     target:self
+                                   selector:@selector(timertoUITextField)
+                                   userInfo:nil
+                                    repeats:NO];
+    
+}
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+{
+    [self textFieldDidChange];
+    
+    
+    return YES;
+}
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+    
+    
+    [self SearchMoviesResults];
+    
+    return [textField resignFirstResponder];
+    
+}
+
+
+- (void) timertoUITextField {
+    
+    
+    [searchTextfield resignFirstResponder];
+    
+}
+
+
+
+                            //////    Touches Methods   ///////
+
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    [self textFieldDidChange];
+    
+    [searchTextfield resignFirstResponder];
+    
+}
+
+
+
+
+                            //////   Buttons Action Calling Methods  //////
+
+
+
+                                ////  Reset Button  //////
+
+
+- (void) resetMovieResults {
+    
+    
+    
+                                searchTextfield.text = nil;
+                                
+                                urlDynamicIMD.text = nil;
+                                
+                                urlStaticIMDB.text = nil;
+                                
+                                genresDynamic.text = nil;
+                                
+                                genresStatic.text = nil;
+                                
+                                staticDirector.text = nil;
+                                
+                                dynamicDirector.text = nil;
+                                
+                                dynamicTitle.text = nil;
+                                
+                                staticTitle.text = nil;
+                                
+                                
+                                urlDynamicIMD.hidden = YES;
+                                
+                                urlStaticIMDB.hidden = YES;
+                                
+                                genresDynamic.hidden = YES;
+                                
+                                genresStatic.hidden = YES;
+                                
+                                staticDirector.hidden = YES;
+                                
+                                dynamicDirector.hidden = YES;
+                                
+                                dynamicTitle.hidden = YES;
+                                
+                                staticTitle.hidden = YES;
+                                
+                                
+                                [self textFieldDidChange];
+                                
+                                restButton.hidden = YES;
+    
+}
+
+
+
+                                ////  Search Button  //////
+
+
+- (void) SearchMoviesResults {
+    
+    
+                                ////  Resetting Movie Results ///
+    
+                                [searchTextfield resignFirstResponder];
+    
+                                dynamicDirector.text = nil;
+    
+                                genresDynamic.text = nil;
+    
+                                urlDynamicIMD.text = nil;
+    
+                                dynamicTitle.text = nil;
+    
+                                restButton.hidden = YES;
+    
+    
+    
+                                urlDynamicIMD.hidden = YES;
+                                genresDynamic.hidden = YES;
+                                dynamicDirector.hidden = YES;
+                                dynamicTitle.hidden = YES;
+    
+    
+
+    
+    
+                                //// Activity Indicator  ///
+    
+    
+                indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+                indicator.frame = CGRectMake(0, 0, 40, 40);
+    
+                indicator.center = self.view.center;
+    
+                [self.view addSubview:indicator];
+    
+                [indicator startAnimating];
+
+    
+    
+    
+        ////        ???????????    Making Query to Server  ????????????    /////
+    
+    
+            NSString *str = @"http://www.myapifilms.com/imdb?title=mask&format=JSON";
+    
+            NSString *st = [str stringByReplacingOccurrencesOfString:@"mask" withString:searchTextfield.text];
+    
+            NSURL *url1 = [NSURL URLWithString:st];
+    
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url1];
+    
+            NSOperationQueue *queue = [[NSOperationQueue alloc]init];
+    
+            [NSURLConnection sendAsynchronousRequest:urlRequest queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+         
+         
+         
+                        if ([data length]>0 && error == nil) {
+             
+             
+             NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+             
+             
+             // =====================  To get genres Names =============================== //
+             
+             
+             NSArray *genres = [dataDic valueForKey:@"genres"];
+             
+             
+             
+             NSArray *flattenedgenres = [genres valueForKeyPath:flatterArrayString];
+             
+
+             
+             NSString *mutstr = [flattenedgenres componentsJoinedByString:joinByCommaString];
+             
+             
+             // ===================== To get Director Names =============================== //
+             
+             
+             NSDictionary *dirDic = [dataDic valueForKey:@"directors"];
+             
+             
+             NSArray *dirName = [dirDic valueForKey:@"name"];
+             
+             
+             NSArray *flatteneddirName  = [dirName valueForKeyPath:flatterArrayString];
+             
+             
+             
+             NSString *dirNamesStr = [flatteneddirName componentsJoinedByString:joinByCommaString];
+             
+             
+             // ===================== To get Title Names =================================  //
+             
+             
+             NSArray *titleMov = [dataDic valueForKey:@"title"];
+             
+             
+             NSString *movNameTitleStr = [titleMov componentsJoinedByString:joinByCommaString];
+             
+             
+             // ===================== To get Url Links ==================================  //
+             
+             NSArray *movUrlIMDB = [dataDic valueForKey:@"urlIMDB"];
+             
+             
+             
+             NSString *movUrlIMDBStr = [movUrlIMDB componentsJoinedByString:emptyString];
+             
+             
+             
+             
+             
+                                ///  Reset Button  ///
+         
+             restButton = [UIButton buttonWithType:UIButtonTypeCustom];
+             
+             restButton.frame = CGRectMake(220, 600, 60, 60);
+             
+             [restButton setImage:[UIImage imageNamed:@"resetButton.png"] forState:UIControlStateNormal];
+             
+             
+             [restButton addTarget:self action:@selector(resetMovieResults) forControlEvents:UIControlEventTouchUpInside];
+
+            [self.view addSubview:restButton];
+
+             
+             
+             
+                    /////    Movie Results Label Printing   /////
+           
+             
+             
+                staticTitle = [[UILabel alloc]initWithFrame:CGRectMake(20, 300, 100, 60)];
+                
+                staticTitle.text = @"Title";
+                            
+                staticTitle.textAlignment = NSTextAlignmentCenter;
+                
+                staticTitle.backgroundColor = [UIColor brownColor];
+             
+                staticTitle.textColor = [UIColor blackColor];
+             
+                [self.view addSubview:staticTitle];
+
+             
+                dynamicTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 300, 200, 60)];
+             
+                dynamicTitle.text = movNameTitleStr;
+                            
+                dynamicTitle.textAlignment = NSTextAlignmentCenter;
+                            
+                dynamicTitle.backgroundColor = [UIColor grayColor];
+
+                dynamicTitle.textColor = [UIColor whiteColor];
+             
+                [self.view addSubview:dynamicTitle];
+
+             
+                staticDirector = [[UILabel alloc]initWithFrame:CGRectMake(20, 370, 100, 60)];
+             
+                staticDirector.text = @"Dir_Name";
+                
+                staticDirector.textAlignment = NSTextAlignmentCenter;
+                            
+                staticDirector.backgroundColor = [UIColor brownColor];
+
+                staticDirector.textColor = [UIColor blackColor];
+             
+                [self.view addSubview:staticDirector];
+
+             
+             
+                dynamicDirector = [[UILabel alloc]initWithFrame:CGRectMake(140, 370, 200, 60)];
+             
+                dynamicDirector.text = dirNamesStr;
+                            
+                dynamicDirector.backgroundColor = [UIColor grayColor];
+                            
+                dynamicDirector.textAlignment = NSTextAlignmentCenter;
+
+                dynamicDirector.numberOfLines = 4;
+             
+                dynamicDirector.textColor = [UIColor whiteColor];
+             
+                [self.view addSubview:dynamicDirector];
+
+
+                genresStatic = [[UILabel alloc]initWithFrame:CGRectMake(20, 450, 100, 60)];
+             
+                genresStatic.text =@"Genres";
+                            
+                genresStatic.textAlignment = NSTextAlignmentCenter;
+                            
+                genresStatic.backgroundColor = [UIColor brownColor];
+
+             
+                genresStatic.textColor = [UIColor blackColor];
+             
+                [self.view addSubview:genresStatic];
+
+             
+                genresDynamic = [[UILabel alloc]initWithFrame:CGRectMake(140, 450, 200, 60)];
+             
+                genresDynamic.text = mutstr;
+                            
+                genresDynamic.backgroundColor = [UIColor grayColor];
+
+                genresDynamic.numberOfLines = 4;
+                            
+                genresDynamic.textAlignment = NSTextAlignmentCenter;
+             
+                genresDynamic.textColor = [UIColor whiteColor];
+             
+                [self.view addSubview:genresDynamic];
+
+             
+                urlStaticIMDB = [[UILabel alloc]initWithFrame:CGRectMake(20, 530, 100, 60)];
+             
+                urlStaticIMDB.text = @"UrlIMDB:";
+                            
+                urlStaticIMDB.textAlignment = NSTextAlignmentCenter;
+                            
+                urlStaticIMDB.backgroundColor = [UIColor brownColor];
+
+             
+                urlStaticIMDB.textColor = [UIColor blackColor];
+             
+                [self.view addSubview:urlStaticIMDB];
+             
+
+                urlDynamicIMD = [[UILabel alloc]initWithFrame:CGRectMake(140, 530, 200, 60)];
+             
+                urlDynamicIMD.text = movUrlIMDBStr;
+                            
+                urlDynamicIMD.backgroundColor = [UIColor grayColor];
+                            
+                urlDynamicIMD.textAlignment = NSTextAlignmentCenter;
+
+                urlDynamicIMD.numberOfLines = 2;
+             
+                urlDynamicIMD.textColor = [UIColor whiteColor];
+             
+                [self.view addSubview:urlDynamicIMD];
+                            
+                            
+                            
+             
+             
+[indicator stopAnimating];
+
+             
+             
+         }
+                
+                
+                /////    !!!!!!!!!!!!!    Error Handling !!!!!!!!!!!!   ///////
+                
+                
+         
+         else if ([data length] == 0 && error == nil)
+         {
+             
+             
+             alert = [[UIAlertView alloc]initWithTitle:@"No Movie Found" message:@"Try Other Search" delegate:self cancelButtonTitle:tyrAgainstring otherButtonTitles:nil];
+             
+             
+             [alert show];
+             
+             [indicator stopAnimating];
+             
+             
+         }
+                
+                
+                /////    !!!!!!!!!!!!!    Error Handling !!!!!!!!!!!!   ///////
+
+         
+         else if (error != nil)
+         {
+             alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No Connection / remove Spaces" delegate:self cancelButtonTitle:tyrAgainstring otherButtonTitles:nil];
+             
+             [alert show];
+             
+             [indicator stopAnimating];
+             
+         }
+         
+     }
+     
+     ];
+    
+}
+
+
+                        ////   Getting Button Status ////
+
+- (int) buttonstate {
+    
+    
+    
+    if ([searchButton isEnabled]) {
+        j = 1;
+        
+        
+    }
+    
+    else
+        
+        j = 0;
+    
+    return j;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
