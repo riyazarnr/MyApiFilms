@@ -618,6 +618,22 @@ NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data options:kNi
     
 }
 
+/*
+
+    UIStoryboard *stb = [UIStoryboard storyboardWithName:@"menuVC" bundle:nil];
+    rootController = [stb instantiateViewControllerWithIdentifier:@"rootVC"];
+    
+    UIViewController *sourceViewController = self;
+    CATransition* transition = [CATransition animation];
+    transition.duration = .25;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionPush;
+    transition.subtype = kCATransitionFromRight;
+    [sourceViewController.navigationController.view.layer addAnimation:transition
+                                                                forKey:kCATransition];
+    [sourceViewController.navigationController setViewControllers:@[rootController]];
+
+*/
 
 
 @end
